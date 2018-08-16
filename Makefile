@@ -2009,7 +2009,7 @@ export CONFIG_RTL8188EU = m
 all: modules
 
 modules:
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KERNEL_SRC) M=$(shell pwd)  modules
 
 strip:
 	$(CROSS_COMPILE)strip $(MODULE_NAME).ko --strip-unneeded
@@ -2017,6 +2017,12 @@ strip:
 install:
 	install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
 	/sbin/depmod -a ${KVER}
+
+modules_install:
+	$(MAKE) -C $(KERNEL_SRC) M=$(shell pwd) modules_install
+
+clean:
+	$(MAKE) -C $(KERNEL_SRC) M=$(shell pwd) clean
 
 uninstall:
 	rm -f $(MODDESTDIR)/$(MODULE_NAME).ko
